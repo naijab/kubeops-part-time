@@ -271,7 +271,6 @@ FizzBuzz
 
 > ANS: [fizz_buzz.rs](https://github.com/naijab/kubeops-part-time/blob/master/algorithms/src/fizz_buzz.rs)
 
-
 2. Bob has a server farm crunching numbers. He has nodes servers in his farm. His company has a lot of work to do. The work comes as a number workload which indicates how many jobs there are. Bob wants his servers to get an equal number of jobs each. If that is impossible, he wants the first servers to receive more jobs. He also wants the jobs sorted, so that the first server receives the first jobs. The way this works, Bob wants an array indicating which jobs are going to which servers.
 Can you help him distribute all this work as evenly as possible onto his servers?
 
@@ -294,6 +293,7 @@ A couple of days go by and Bob sees a spike in jobs. Now there are 10, but he ha
 ```
 distribute(4, 10) # => [[0, 1, 2], [3, 4, 5], [6, 7], [8, 9]]
 ```
+> ANS: [blob.rs](https://github.com/naijab/kubeops-part-time/blob/master/algorithms/src/blob.rs)
 
 3. It's tricky keeping track of who is owed what when spending money in a group. Write a function to balance the books.
 
@@ -321,7 +321,9 @@ splitTheBill(group) // returns {A: 5, B: 0, C: -5}
 
 ```
 
-1. Fibonacci
+> ANS: [spend_money.rs](https://github.com/naijab/kubeops-part-time/blob/master/algorithms/src/spend_money.rs)
+
+4. Fibonacci
 The Fibonacci numbers are the numbers in the following integer sequence.
 
 ```
@@ -338,6 +340,8 @@ F0 = 0 and F1 = 1.
 
 Given a number n, print n-th Fibonacci Number.
 
+> ANS: [fibonacci.rs](https://github.com/naijab/kubeops-part-time/blob/master/algorithms/src/fibonacci.rs)
+
 5. Palindrome
 Given a string, write a function to check if it is palindrome or not.
 
@@ -348,3 +352,5 @@ In case: odd you should use the middle to split the word and then reverse the st
 A string is said to be palindrome if the reverse of the string is the same as the string. For example, “abba” is Palindrome, but “abbc” is not Palindrome.
 
 Anna, civic, kayak, level, madam, mom, noon, racecar, radar, redder, refer, repaper, rotator, 12321, 15651
+
+> ANS: [palindrome.rs](https://github.com/naijab/kubeops-part-time/blob/master/algorithms/src/palindrome.rs)
