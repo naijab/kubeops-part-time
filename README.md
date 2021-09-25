@@ -5,6 +5,7 @@
 1. Describe Git branching strategies (Git-flow, single branch, feature branch etc.) which you have used and what purpose does it serves.
 
 > ANS: ใช้ git-flow เป็นการแบ่ง branch เพื่อใช้ประโยชน์ รวมถึงแยกโค้ดที่ทดสอบแล้ว หรือกำลังพัฒนาออกจากกัน
+>
 > - **master** เป็น branch ของโค้ดที่เสร็จแล้ว ทดสอบเรียบร้อยแล้ว หรือเรียกว่า production รวมถึงจะติด tag version เพื่อแยก version ใหม่เก่าออกจากกัน และให้ง่ายต่อการ deploy หรือ rollback
 > - **develop** เป็น branch หลักของโปรเจค เพราะหากมี feature ใหม่ๆ จะต้อง merge มารวมกันที่นี่ก่อน รวมถึงเพื่อใช้ทดสอบก่อนจริงก่อนขึ้น production อีกทั้ง develop จะแตก branch มาจาก master เพื่อที่จะได้ pull request กลับเข้า master เมื่อพร้อมจะ deploy production
 > - **feature** เป็น branch ย่อยที่แตกจาก develop เพื่อพัฒนา หรือแก้ไขฟังก์ชันต่างๆ ที่ต้องแยกเพื่อให้คนในทีม สามารถพัฒนาไปพร้อมๆ กันได้ และเมื่อเสร็จจะ merge กลับเข้า develop
@@ -13,6 +14,7 @@
 2. How do you revert a commit that has already been pushed and made public?
 
 > ANS: สามารถใช้คำสั่ง `git reset` หรือ `git revert` โดยทั้งสองตัวมีข้อแตกต่างกันคือ
+>
 > - **git reset** จะทำการ reset history หรือลบ commit นั้น ๆ หากเลือก mode hard ซึ่งต้องมั่นใจว่าที่ reset นั้นถูกต้อง เพราะหาก git force push แล้วคนอื่น pull ลงมาจะย้อนกลับไม่่ได้
 > - **git revert** จะทำการยกเลิกการแก้ไขของ commit นั้น โดยจะ commit ใหม่ต่ออีกที แนะนำวิธีนี้เพราะปลอดภัย เพราะจะยังคงมี history เหลืออยู่
 
@@ -22,7 +24,8 @@
 
 4. “200 OK” what does it mean and show use case this HTTP Status?
 
-> ANS: เป็น http status ที่ใช้สื่อสารกับ client ว่าการทำงานนั้นเสร็จสมบูรณ์แล้ว เช่น เปิดหน้าเว็บไชต์ถ้าเปิดได้ปกติ ก็จะได้ 200 OK รวมถึงการดาวน์โหลดไฟล์ต่าง ๆ ที่ใช้ในเว็บนั้น ๆ 
+> ANS: เป็น http status ที่ใช้สื่อสารกับ client ว่าการทำงานนั้นเสร็จสมบูรณ์แล้ว เช่น เปิดหน้าเว็บไชต์ถ้าเปิดได้ปกติ ก็จะได้ 200 OK รวมถึงการดาวน์โหลดไฟล์ต่าง ๆ ที่ใช้ในเว็บนั้น ๆ
+>
 > - อีกทั้งยังใช้ในการตรวจสอบการติดต่อระหว่าง server สองตัว ว่าปกติดีหรือไม่
 
 5. “201 Created” what does it mean and show use case this HTTP Status?
@@ -31,7 +34,7 @@
 
 6. “301 Moved Permanently” what does it mean and show use case this HTTP Status?
 
-> ANS: เป็น status ที่บอก client ว่ามีการ redirect url นึงไปอีกที่ เช่น เข้า url ผ่าน A แต่มีการ redirect ต่อไปยัง B 
+> ANS: เป็น status ที่บอก client ว่ามีการ redirect url นึงไปอีกที่ เช่น เข้า url ผ่าน A แต่มีการ redirect ต่อไปยัง B
 
 7. “400 Bad Request” what does it mean and how to identify the problem?
 
@@ -41,44 +44,53 @@
 8. “401 Unauthorized” what does it mean and how to identify the problem?
 
 > ANS: เป็น status บอก client ว่าไม่ได้ยืนยันตัวตน ทำให้เข้าถึงไม่ได้ ดังนั้นมักจะ redirect ให้ login ก่อน
+>
 > - การระบุปัญหา จะต้องตรวจดูว่า server มีการ auth อย่างไร มีการใช้ token หรือ cookie หรือไม่ ถ้าใช้ ดูว่ามีครบ หรือส่งไปกับ header หรือไม่
 
 9. “403 Forbidden” what does it mean and how to identify the problem?
 
-> ANS: เป็น status บอก client ว่าไม่มีสิทธิ์ในการเข้าถึง เช่น user ไม่มีสิทธิ์ในหน้า admin หรือระดับสิทธิ์ไม่ถึงตามที่ server กำหนด 
+> ANS: เป็น status บอก client ว่าไม่มีสิทธิ์ในการเข้าถึง เช่น user ไม่มีสิทธิ์ในหน้า admin หรือระดับสิทธิ์ไม่ถึงตามที่ server กำหนด
+>
 > - การระบุปัญหา จะต้องตรวจสอบว่า user ที่ใช้งานมีสิทธิ์ หรือระดับ user กับ api นั้น ๆ หรือไม่
 
-10.   “404 Not Found” what does it mean and how to identify the problem?
+10. “404 Not Found” what does it mean and how to identify the problem?
 
 > ANS: เป็น status บอก client ว่าหน้าที่กำลังเข้าถึงนั้นไม่มีอยู่ หรือไม่พบ รวมถึง server แจ้งว่าไม่พบ เช่น user id หรือ product id ที่เรียกอยู่
+>
 > - การระบุปัญหา จะต้องลองค้นหาไฟล์ที่อยู่บน server ว่ามีอยู่จริงหรือไม่ หรือชื่อเปลี่ยนไป path ถึงต้องไหม
 
-11.  “500 Internal Server Error” what does it mean and how to identify the problem?
+11. “500 Internal Server Error” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้ง client ว่ามีปัญหาบางอย่างที่ server ทำให้ไม่สามารถให้บริการได้ อาจจะเกิดจากการล่มของฐานข้อมูล ทำให้ server ไม่สามารถตอบสนอง client ได้
+>
 > - การระบุปัญหา จะต้องดูจาก log ที่มีการเก็บไว้ ว่าเกิดที่ service ใดๆ ช่วงเวลาไหน เพื่อที่จะได้แก้ไขได้ถูกต้อง
 
 12. “502 Bad Gateway” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้ง client ว่ามีปัญหาจากการติดต่อ server เช่น proxy ก่อนเข้าถึง backend มีปัญหา
+>
 > - การระบุปัญหา ดู log ประกอบ รวมถึง check status ของ proxy หรือบริการที่อาจจะมีปัญหา ว่ายังทำงานได้ครบถ้วน หรือไม่
 
 13. “503 Service Unavailable” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้ง client ว่ามี service มีปัญหา เช่น อาจจะรับ request ไม่ไหว ดังนั้น หากมี 503 เกิดขึ้นแสดงว่า อาจจะต้องดูว่า service หรือเครื่อง server เรามี spec ที่เพียงพอแล้วหรือยัง หรือน้อยเกินไป ในการให้บริการ
+>
 > - การระบุปัญหา ดู log ประกอบ รวมถึงดูว่าช่วงเวลาที่มีปัญหา สัมพันธ์กันอย่างไรกับปริมาณ request อาจจะลองเพิ่ม spec หรือ container แล้วลองยิ่ง request เพื่อทดสอบการรองรับ ว่าเพียงพอ หรือเผื่อไว้มากพอ
 
 14. “504 Gateway Timeout” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้งว่า service มีปัญหา เพราะเนื่องจาก ระยะเวลาที่ใช้ทำการนานไป และอาจส่งผลต่อ user คนอื่น จึงต้องตัด connection ที่รอนาน เพื่อลดปัญหาทั้งระบบ
+>
 > - การระบุปัญหา จะต้องทดสอบการยิง request จาก vpn หลายๆ ที่ เพื่อทดสอบว่า กลุ่มลูกค้าที่ใช้ มีปัญหามากน้อย แค่ไหน อาจต้องเพิ่ม sever, cdn ที่ประเทศนั้นๆ
 
 15. What are Linux network tools do you use for troubleshooting network problems as well as usage scenarios for each tool?
 
-> ANS: 
-> - **ping** เป็น tool ในการทดสอบการติดต่อระหว่าง server ว่าสามารถติดต่อได้หรือไม่ มักจะเป็น tools ตัวแรกในการตรวจสอบปัญหา รวมถึงดูระยะเวลาการตอบสนอง ว่านานเกินไปหรือไม่ 
+> ANS:
+>
+> - **ping** เป็น tool ในการทดสอบการติดต่อระหว่าง server ว่าสามารถติดต่อได้หรือไม่ มักจะเป็น tools ตัวแรกในการตรวจสอบปัญหา รวมถึงดูระยะเวลาการตอบสนอง ว่านานเกินไปหรือไม่
 > - ตัวที่สอง หาทดสอบเชื่อมต่อด้วย ping แล้ว ยังปกติ ต้องหาว่า service นั้นๆ ทำงานอยู่หรือไม่ โดยใช้ **netstat** ใช้ในการแสดง port ต่างๆ ที่ถูกใช้ในเครื่อง สุดท้ายตรวจสอบว่า domain ที่ผูกไปยิงไป ip ถูกต้องไหม
 > - **nslookup** ใช้ในการหา ip ที่ผูกกับ domain name เพื่อให้รู้ว่า domain name นั้นผูกกับ ip ถูกต้องหรือไม่
+
 ---
 
 ## Intermediate
@@ -86,37 +98,43 @@
 1. Assume we have an application that is designed as below. Our application stopped responding due to an extremely high number of clients in some circumstances.
 We have tried scaling a number of API Gateway and Service A nodes but it didn’t help. What are the possible problems that lies in our system in which components and how to fix them?
 
-> ANS: 
+> ANS:
+>
 > - ต้องตรวจดูว่าการทำงานของโค้ดของระบบนั้น ๆ สามารถทำงานแบบ pararell หรือหลาย thread ได้จริงไหม เพราะต่อให้มีจำนวน nodes เพิ่มขึ้น แต่โค้ดไม่มีการกระจายการทำงานจริงๆ ก็อาจจะทำให้ไม่เกิดประสิทธิภาพ
 > - อีกปัญหาที่อาจเกิดขึ้นคือการตั้งค่า API Gateway ที่กระจาย load ให้ nodes กระจุกตัว หรือไม่มี load เข้า nodes อื่น ๆ อาจจะต้องทำการดู log ว่าประมาณ request ที่ส่งไปแต่ละ nodes มีปริมาณคล้ายๆ กันหรือไม่ หรือกระจุกตัวแค่ไม่กี่ nodes
 > - ตรวจสอบการกิน cpu, ram, disk ว่าแต่ละ service ได้ใช้ประสิทธิภาพส่วนไหนมากที่สุด เพื่อประเมินว่าอาจจะต้องเพิ่มเครื่องหรือไม่ หากยังแก้ปัญหาด้วย 2 วิธีข้างต้นไม่ได้
 
 2. How do you keep the docker image smallest as possible?
 
-> ANS: การใช้ docker muti stage 
+> ANS: การใช้ docker muti stage
+>
 > 1. แยกการ build โดยใช้ image ที่มี env พร้อมในการ build app ให้สมบูรณ์ อาจจะแยกรูปภาพ, วิดีโอ ไปไว้กับ file service เช่น cloudinary, cloud storage เพื่อลดการนำไฟล์ไปกับ image ให้น้อยที่สุด อีกทั้งยังทำให้ build เร็วขึ้น
 > 2. นำ build app ที่พร้อมทำงาน มาใส่อีก image ที่มีเฉพาะตัว run time (ตัดส่วนที่ไม่จำเป็นออก เพื่อรีดขนาดตัว image เล็กลง)
 
 3. What is the difference between overlay, bridge, host network in Docker? When to use each of them?
 
-> ANS: 
+> ANS:
+>
 > - **overlay** เป็น network สำหรับสื่อสารข้าม server เพราะใน production จะมี server หลายตัวที่ทำงานร่วมกัน หรือแม้กระทั้งเชื่อมต่อกันข้ามโลก ซึ่งจะใช้ใน production เช่น บน docker swarm, k8s ซึ่งการทำงานจะมีการจำลอง network เป็นของตัวเอง ซึ่งทำงานบนระบบ network จริงๆ อีกที
-> - **bridge** เป็น network พื้นฐานที่ docker container ใช้สื่อสารกันและกัน โดยใช้ ip ในการติดต่อกัน ซึ่ง docker จะทำการ assign ip ให้แต่ละ container เอง โดย network แบบนี้จะใช้ในตอนที่ dev บนเครื่องตัวเอง ไม่เหมาะกับการใช้งานบน production 
+> - **bridge** เป็น network พื้นฐานที่ docker container ใช้สื่อสารกันและกัน โดยใช้ ip ในการติดต่อกัน ซึ่ง docker จะทำการ assign ip ให้แต่ละ container เอง โดย network แบบนี้จะใช้ในตอนที่ dev บนเครื่องตัวเอง ไม่เหมาะกับการใช้งานบน production
 > - **host** เป็น network ที่จะใช้ ip ของ server แทนที่จะเป็น ip local โดยจะติดต่อกันและกันผ่าน port วิธีนี้ทำให้การติดต่อกันของ container เร็วกว่าแบบ bridge เพราะไม่ต้อง route ให้เสียเวลา ดังนั้น network แบบนี้ไม่เหมาะกับ production มากนักเพราะ port จะ public ตาม ip ด้วย ทำให้ความปลอดภัยน้อยลง หากมีการ scan port เพื่อโจมตี
 
 4. How does the Kubernetes service talk to each other in the same cluster?
 
-> ANS: k8s service คุยกันด้วย domain name ซึ่ง k8s จะ generate ตามการตั้งค่า service รวมถึง port เช่น service ใช้ hi.svc.default:3000 คุยกับ world.svc.default:3000
+> ANS:
+> - k8s service คุยกันด้วย domain name ซึ่ง k8s จะ generate ตามการตั้งค่า service รวมถึง port เช่น service ใช้ hi.svc.default:3000 คุยกับ world.svc.default:3000
+> - k8s รวบรวมไว้เป็น DNS กลางทำให้ service ใน cluster รู้จักกันและกัน
 
 5. What’s different between L2, L4, and L7 Load balancers? When to use it?
 
-> ANS: 
+> ANS:
+>
 > - L2 เป็นการใช้ link lan ระหว่าง hardware หลายตัว เพื่อรวม bandwidth ให้มากขึ้น level นี้ต่างกับอื่น ๆ คือไม่ได้เกี่ยวข้อง software มากนัก
-> - - ใช้เมื่อ Level อื่น ๆ เพิ่มเต็มที่แล้ว ทำให้ต้องพิจารณาเพิ่ม hardware
+>   - - ใช้เมื่อ Level อื่น ๆ เพิ่มเต็มที่แล้ว ทำให้ต้องพิจารณาเพิ่ม hardware
 > - L4 เป็นการให้ server หลายตัว มีการ deploy instane มากกว่า 1 ตัวทำให้มีตัวสำรอง หากตัวนึงตายก็ยังมี instance สำรองอยู่นั่นเอง และเมื่อมี request ยิงเข้ามาจะทำการ round robin หรือเทคนิคอื่น ๆ เพื่อวนเรียก server แต่ละตัวที่มีระบบแบบเดียวกันให้บริการ ซึ่งยากต่อการ scale เพราะถึงจุดๆ นึงการ scale จะไม่มีผล เนื่องจาก service ที่ผูกกันมากเกินไป สิ่งนี้ทำให้ต่างกับ L7 ที่จะแยก service ที่หน้าที่แตกต่างกันออกจากกัน
-> - - ใช้เมื่อระบบนั้น ๆ เหมืนกัน เช่น database ซึ่งสามารถทำเป็น database cluster ได้
+>   - - ใช้เมื่อระบบนั้น ๆ เหมืนกัน เช่น database ซึ่งสามารถทำเป็น database cluster ได้
 > - L7 เป็นการแบ่งภาระหน้าที่ต่างกัน เพื่อกระจายการทำงาน คนละหน้าที่ เช่น server 1 ให้บริการไฟล์ server 2 ให้บริการฐานข้อมูล ดังนั้นการใช้ micro service จึงมีประโยชน์มาก เมื่อ service แต่ละตัวแยกออกจากกัน หาวัดประมาณการใช้งาน ก็จะสามารถควบคุม nodes หรือจำนวน container ได้ว่าควรเพิ่มขึ้นหรือลดลง ส่งผลให้การจูนประสิทธิภาพมากขึ้น เพราะ service บางตัวต้องการ nodes หรือ spec ram, cpu มากกว่าตัวอื่น ทำให้การ scaling สามารถทำได้โดยง่าย ทำให้ k8s จึงมาช่วยได้ในเรื่องนี้
-> - - ใช้เมื่อ ระบบของเรามีความซับซ้อน มีขนาดใหญ่ มี service ย่อย ๆ ทำงานร่วมกันจำนวนมาก รวมถึงต้องการจัดสรรให้ สามารถ scaling บาง service ได้
+>   - - ใช้เมื่อ ระบบของเรามีความซับซ้อน มีขนาดใหญ่ มี service ย่อย ๆ ทำงานร่วมกันจำนวนมาก รวมถึงต้องการจัดสรรให้ สามารถ scaling บาง service ได้
 
 ---
 
@@ -125,6 +143,10 @@ We have tried scaling a number of API Gateway and Service A nodes but it didn’
 1. Assume that you are using a private cloud for your infrastructure. How do you manage logs, metrics, and alerts for your infrastructure and applications? Which tools do you use and why?
 
 > ANS:
+> - ใช้ **Loki** ใช้สำหรับการรวบรวม log จาก application รวมถึง infra ต่างๆ เพื่อนำไปประมวณผลแสดงผลต่อที่ dashboard 
+> - ใช้ **grafana** เป็น dashboard เพราะรองรับ plugin ได้หลากหลาย อีกทั้งเชื่อมต่อ software ได้หลายตัว ทำให้ง่ายต่อการดู log หรือ metrics 
+> - สาเหตุที่เลือก loki กับ grafana เพราะเป็น software เจ้าเดียวกัน ทำให้เวลาเกิดปัญหา สามารถซือ support เดียวกันได้ง่าย รวมถึงความเข้ากันได้ของ software สองตัวด้วย
+> - ส่วนการแจ้งเตือน ก็เรียก webhook ส่งไปยัง slack หรือ line เมื่อถึงเงื่อนไขที่กำหนด เช่น มีการใช้ CPU มากกว่าปกติ, ไม่สามารถเชื่อมต่อ database
 
 2. How do you secure the following?
    - application
@@ -132,6 +154,10 @@ We have tried scaling a number of API Gateway and Service A nodes but it didn’
    - data
 
 > ANS:
+> - การเข้าถึง dashboard จะต้องกำหนดสิทธิ์ หรือบัญชีผู้ใช้ ไม่ใช้ username, password default รวมถึงหากมีการเชื่อมต่อกับ software, plugin ภายนอก ควรจะตรวจสอบอยู่เสมอ รวมถึงจำกัดสิทธิ์ไม่ให้มากเกินไป 
+> - ข้อมูล log เองไม่ควรเก็บข้อมูลที่ sensitive ของ user เพราะอาจจะหลุดสู่ภายนอก ส่งผลเสียต่อระบบได้
+> - ส่วนข้อมูลที่รวบรวม จะต้องมีการเข้ารหัส เพื่อป้องกัน หากมีการหลุดสู่โลก internet
+> - การแจ้งเตือนก็สำคัญ เพราะยิ่งรู้เร็วยิ่งแก้ปัญหาได้รวดเร็ว ดังนั้นควรตรวจสอบเสมอว่าระบบแจ้งเตือนทำงานได้ถูกต้อง และควรมีหลายช่องทางในการแจ้งเตือน เช่น slack, line เผื่อกรณีตัวใดตัวนึงไม่สามารถทำงานได้
 
 3. Base on your experience, how do you reduce your service downtime as much as possible during
    - software upgrade
@@ -139,6 +165,9 @@ We have tried scaling a number of API Gateway and Service A nodes but it didn’
    - incident
 
 > ANS:
+>
+> - การมี server ทำเป็น cluster ทำให้หากมีปัญหาก็สามารถ route ไปยัง node ที่ปกติได้ หากมีการทำ db migrate, software upgrade ควรจะทะยอยทำทีละ nodes รวมถึงใช้ cache ที่ server สำรองจากนั้นค่อยตั้ง job เพื่อให้ทะยอย update กลับไปที่ server หลัก
+> - หากเกิด incident จะต้องสามารถ rollback กลับไป version เดิมได้อัตโนมัติ
 
 4. Configuration management
   a. Which Among Puppet, chef, Ansible, or another is the best Configuration management tool?
@@ -146,14 +175,23 @@ We have tried scaling a number of API Gateway and Service A nodes but it didn’
   c. Do you still need to use it if you already have docker-swarm or Kubernetes?
 
 > ANS:
+> a. terraform
+> b. เพราะช่วยสามารถจัดการ การสร้าง vm หรือ deploy nodes ไปยัง cloud ผู้ให้บริการได้ แถมอยู่ในรูปแบบ code ทำให้จัดการ หรือ rollback ได้ อีกทั้งมี doc ที่เข้าใจง่าย อีกทั้งสามารถเขียนเงื่อนไข if else
+> c. ใช้ร่วมกับการสร้าง k8s cluster โดยกำหนด nodes รวมถึง spec เพื่อเพิ่ม nodes ใหม่ หรือลบ nodes ลงผ่าน code ที่ config ใว้ ทำไมต้องใช้ร่วมกัน เพราะ k8s เองให้จัดการ software deployment ไป ส่วนระดับ config infra ให้ terraform จัดการ เพราะแต่ละ tools เองมีจุดเด่น หรือความสามารถเฉพาะทางที่ต่างกัน ดังนั้นจึงเลือกใช้ตัวที่คิดว่าเหมาะสมกับงานมากกว่าตัวเดียวจบ
 
 5. How do you design your Kubernetes cluster? what DNS, CNI, ingression is being used? Why?
 
-> ANS:
+> ANS: การออกแบบจะดูว่า software ที่จะต้อง deploy มี service อะไรบ้าง รวมถึงการแยก beta, alpha, dev, prod enviroment ให้ชัดเจน เพื่อเหมาะสำหรับทดสอบ หรือพัฒนาในทีม โดยการแยก namespace สำหรับ project นั้น ๆ ทำให้ติดตาม หรือ debug ได้ง่ายกว่าการกระจุก namespace เดียว
+>
+> - DNS มีการใช้เพื่อระบุ ip ของ service เพราะ k8s ใช้ domain name ในการติดต่อกันระหว่าง service ดังนั้นจึงต้องมีระบบ DNS เพื่อชี้ ip ให้ถูกต้อง
+> - CNI เป็นมาตรฐานในการติดต่อระหว่าง container เพื่อใช้ในการจัดการ resorce ใน cluster ให้มีประสิทธิภาพ โดยสามารถเปลี่ยน CNI อื่น ๆ ได้ตามความเหมาะสม
+> - ingression เป็นตัวที่จัดการการวิธีเชื่อมต่อระหว่างภายนอก เข้ามา k8s cluster เช่น การกำหนด port หรือ domain name กับ service
 
 6. How do you measure service quality to give the best experience to your customer? (SLO, SLA)
 
-> ANS:
+> ANS: ใช้ software ในการบันทึกสถิติการทำงานของ service หรือ nodes ใดๆ ทั้งจำนวนปกติ จำนวนครั้งที่พัง หรือล่ม โดยเลือกใช้ Keptn เป็นตัวช่วยการ check รวบรวม health ของ service อีกทั้งยังสามารถวัดออกมาเป็น percent SLO ได้ อีกทั้งสามารถตั้งให้แจ้งเตือน ไปยังช่องทางต่างๆ เช่น slack, line, email
+> - ดังภาพตัวอย่าง
+> ![](assets/keptn.png)
 
 ---
 
