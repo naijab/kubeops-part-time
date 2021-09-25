@@ -1,5 +1,14 @@
 # kubeops-part-time - Question
 
+- [kubeops-part-time - Question](#kubeops-part-time---question)
+  - [Normal](#normal)
+  - [Intermediate](#intermediate)
+  - [Professional](#professional)
+  - [Hands-On](#hands-on)
+  - [Algorithms](#algorithms)
+
+---
+
 ## Normal
 
 1. Describe Git branching strategies (Git-flow, single branch, feature branch etc.) which you have used and what purpose does it serves.
@@ -175,9 +184,9 @@ We have tried scaling a number of API Gateway and Service A nodes but it didn’
   c. Do you still need to use it if you already have docker-swarm or Kubernetes?
 
 > ANS:
-> a. terraform
-> b. เพราะช่วยสามารถจัดการ การสร้าง vm หรือ deploy nodes ไปยัง cloud ผู้ให้บริการได้ แถมอยู่ในรูปแบบ code ทำให้จัดการ หรือ rollback ได้ อีกทั้งมี doc ที่เข้าใจง่าย อีกทั้งสามารถเขียนเงื่อนไข if else
-> c. ใช้ร่วมกับการสร้าง k8s cluster โดยกำหนด nodes รวมถึง spec เพื่อเพิ่ม nodes ใหม่ หรือลบ nodes ลงผ่าน code ที่ config ใว้ ทำไมต้องใช้ร่วมกัน เพราะ k8s เองให้จัดการ software deployment ไป ส่วนระดับ config infra ให้ terraform จัดการ เพราะแต่ละ tools เองมีจุดเด่น หรือความสามารถเฉพาะทางที่ต่างกัน ดังนั้นจึงเลือกใช้ตัวที่คิดว่าเหมาะสมกับงานมากกว่าตัวเดียวจบ
+> - a. terraform
+> - b. เพราะช่วยสามารถจัดการ การสร้าง vm หรือ deploy nodes ไปยัง cloud ผู้ให้บริการได้ แถมอยู่ในรูปแบบ code ทำให้จัดการ หรือ rollback ได้ อีกทั้งมี doc ที่เข้าใจง่าย อีกทั้งสามารถเขียนเงื่อนไข if else
+> - c. ใช้ร่วมกับการสร้าง k8s cluster โดยกำหนด nodes รวมถึง spec เพื่อเพิ่ม nodes ใหม่ หรือลบ nodes ลงผ่าน code ที่ config ใว้ ทำไมต้องใช้ร่วมกัน เพราะ k8s เองให้จัดการ software deployment ไป ส่วนระดับ config infra ให้ terraform จัดการ เพราะแต่ละ tools เองมีจุดเด่น หรือความสามารถเฉพาะทางที่ต่างกัน ดังนั้นจึงเลือกใช้ตัวที่คิดว่าเหมาะสมกับงานมากกว่าตัวเดียวจบ
 
 5. How do you design your Kubernetes cluster? what DNS, CNI, ingression is being used? Why?
 
@@ -239,7 +248,7 @@ Choose your favorite language (Rust would be advantages) to solve the following 
 
 BUT we're not allow you to use if/else statement. If there is any if or else word in your code. I will consider this question with 0 scores :(
 
-### Example
+**Example**
 
 ```
 > fizzBuzz(21)
@@ -255,7 +264,7 @@ FizzBuzz
 2. Bob has a server farm crunching numbers. He has nodes servers in his farm. His company has a lot of work to do. The work comes as a number workload which indicates how many jobs there are. Bob wants his servers to get an equal number of jobs each. If that is impossible, he wants the first servers to receive more jobs. He also wants the jobs sorted, so that the first server receives the first jobs. The way this works, Bob wants an array indicating which jobs are going to which servers.
 Can you help him distribute all this work as evenly as possible onto his servers?
 
-### Example
+**Example**
 
 Bob has 2 servers and 4 jobs. The first server should receive job 0 and 1 while the second should receive 2 and 3.
 
@@ -285,7 +294,7 @@ Further points:
 - The values should be positive numbers if the person should receive money from the group, negative numbers if they owe money to the group.
 - If value is a decimal, round to two decimal places.
 
-### Example
+**Example**
 
 3 friends go out together: A spends $20, B spends $15, and C spends $10. The function should return an object/dict showing that A should receive $5, B should receive $0, and
 C should pay $5.
@@ -301,7 +310,7 @@ splitTheBill(group) // returns {A: 5, B: 0, C: -5}
 
 ```
 
-4. Fibonacci
+1. Fibonacci
 The Fibonacci numbers are the numbers in the following integer sequence.
 
 ```
