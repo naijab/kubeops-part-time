@@ -13,9 +13,8 @@ pub fn fizz_buzz(x: i32) -> Result<String, FizzBuzzError>  {
   }     
 }
 
-
 #[cfg(test)]
-mod tests { 
+mod fizz_buzz_test { 
   use super::*;
 
   #[test]
