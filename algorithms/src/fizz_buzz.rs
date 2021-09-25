@@ -31,7 +31,7 @@ mod tests {
   fn it_25_should_be_buzz() {
     let result = fizz_buzz(25);
     let _ = match result {
-      Ok(actual) => assert_eq!(actual, "Buzz", ),
+      Ok(actual) => assert_eq!(actual, "Buzz"),
       Err(error) => panic!("Error : {:?}", error),
     };
   }

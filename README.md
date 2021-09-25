@@ -269,6 +269,9 @@ Buzz
 FizzBuzz
 ```
 
+> ANS: [fizz_buzz.rs](https://github.com/naijab/kubeops-part-time/blob/master/algorithms/src/fizz_buzz.rs)
+
+
 2. Bob has a server farm crunching numbers. He has nodes servers in his farm. His company has a lot of work to do. The work comes as a number workload which indicates how many jobs there are. Bob wants his servers to get an equal number of jobs each. If that is impossible, he wants the first servers to receive more jobs. He also wants the jobs sorted, so that the first server receives the first jobs. The way this works, Bob wants an array indicating which jobs are going to which servers.
 Can you help him distribute all this work as evenly as possible onto his servers?
 
