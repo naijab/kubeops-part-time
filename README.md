@@ -86,23 +86,37 @@
 1. Assume we have an application that is designed as below. Our application stopped responding due to an extremely high number of clients in some circumstances.
 We have tried scaling a number of API Gateway and Service A nodes but it didn’t help. What are the possible problems that lies in our system in which components and how to fix them?
 
-> ANS:
+> ANS: 
+> - ต้องตรวจดูว่าการทำงานของโค้ดของระบบนั้น ๆ สามารถทำงานแบบ pararell หรือหลาย thread ได้จริงไหม เพราะต่อให้มีจำนวน nodes เพิ่มขึ้น แต่โค้ดไม่มีการกระจายการทำงานจริงๆ ก็อาจจะทำให้ไม่เกิดประสิทธิภาพ
+> - อีกปัญหาที่อาจเกิดขึ้นคือการตั้งค่า API Gateway ที่กระจาย load ให้ nodes กระจุกตัว หรือไม่มี load เข้า nodes อื่น ๆ อาจจะต้องทำการดู log ว่าประมาณ request ที่ส่งไปแต่ละ nodes มีปริมาณคล้ายๆ กันหรือไม่ หรือกระจุกตัวแค่ไม่กี่ nodes
+> - ตรวจสอบการกิน cpu, ram, disk ว่าแต่ละ service ได้ใช้ประสิทธิภาพส่วนไหนมากที่สุด เพื่อประเมินว่าอาจจะต้องเพิ่มเครื่องหรือไม่ หากยังแก้ปัญหาด้วย 2 วิธีข้างต้นไม่ได้
 
 2. How do you keep the docker image smallest as possible?
 
-> ANS:
+> ANS: การใช้ docker muti stage 
+> 1. แยกการ build โดยใช้ image ที่มี env พร้อมในการ build app ให้สมบูรณ์ อาจจะแยกรูปภาพ, วิดีโอ ไปไว้กับ file service เช่น cloudinary, cloud storage เพื่อลดการนำไฟล์ไปกับ image ให้น้อยที่สุด อีกทั้งยังทำให้ build เร็วขึ้น
+> 2. นำ build app ที่พร้อมทำงาน มาใส่อีก image ที่มีเฉพาะตัว run time (ตัดส่วนที่ไม่จำเป็นออก เพื่อรีดขนาดตัว image เล็กลง)
 
 3. What is the difference between overlay, bridge, host network in Docker? When to use each of them?
 
-> ANS:
+> ANS: 
+> - **overlay** เป็น network สำหรับสื่อสารข้าม server เพราะใน production จะมี server หลายตัวที่ทำงานร่วมกัน หรือแม้กระทั้งเชื่อมต่อกันข้ามโลก ซึ่งจะใช้ใน production เช่น บน docker swarm, k8s ซึ่งการทำงานจะมีการจำลอง network เป็นของตัวเอง ซึ่งทำงานบนระบบ network จริงๆ อีกที
+> - **bridge** เป็น network พื้นฐานที่ docker container ใช้สื่อสารกันและกัน โดยใช้ ip ในการติดต่อกัน ซึ่ง docker จะทำการ assign ip ให้แต่ละ container เอง โดย network แบบนี้จะใช้ในตอนที่ dev บนเครื่องตัวเอง ไม่เหมาะกับการใช้งานบน production 
+> - **host** เป็น network ที่จะใช้ ip ของ server แทนที่จะเป็น ip local โดยจะติดต่อกันและกันผ่าน port วิธีนี้ทำให้การติดต่อกันของ container เร็วกว่าแบบ bridge เพราะไม่ต้อง route ให้เสียเวลา ดังนั้น network แบบนี้ไม่เหมาะกับ production มากนักเพราะ port จะ public ตาม ip ด้วย ทำให้ความปลอดภัยน้อยลง หากมีการ scan port เพื่อโจมตี
 
 4. How does the Kubernetes service talk to each other in the same cluster?
 
-> ANS:
+> ANS: k8s service คุยกันด้วย domain name ซึ่ง k8s จะ generate ตามการตั้งค่า service รวมถึง port เช่น service ใช้ hi.svc.default:3000 คุยกับ world.svc.default:3000
 
 5. What’s different between L2, L4, and L7 Load balancers? When to use it?
 
-> ANS:
+> ANS: 
+> - L2 เป็นการใช้ link lan ระหว่าง hardware หลายตัว เพื่อรวม bandwidth ให้มากขึ้น level นี้ต่างกับอื่น ๆ คือไม่ได้เกี่ยวข้อง software มากนัก
+> - - ใช้เมื่อ Level อื่น ๆ เพิ่มเต็มที่แล้ว ทำให้ต้องพิจารณาเพิ่ม hardware
+> - L4 เป็นการให้ server หลายตัว มีการ deploy instane มากกว่า 1 ตัวทำให้มีตัวสำรอง หากตัวนึงตายก็ยังมี instance สำรองอยู่นั่นเอง และเมื่อมี request ยิงเข้ามาจะทำการ round robin หรือเทคนิคอื่น ๆ เพื่อวนเรียก server แต่ละตัวที่มีระบบแบบเดียวกันให้บริการ ซึ่งยากต่อการ scale เพราะถึงจุดๆ นึงการ scale จะไม่มีผล เนื่องจาก service ที่ผูกกันมากเกินไป สิ่งนี้ทำให้ต่างกับ L7 ที่จะแยก service ที่หน้าที่แตกต่างกันออกจากกัน
+> - - ใช้เมื่อระบบนั้น ๆ เหมืนกัน เช่น database ซึ่งสามารถทำเป็น database cluster ได้
+> - L7 เป็นการแบ่งภาระหน้าที่ต่างกัน เพื่อกระจายการทำงาน คนละหน้าที่ เช่น server 1 ให้บริการไฟล์ server 2 ให้บริการฐานข้อมูล ดังนั้นการใช้ micro service จึงมีประโยชน์มาก เมื่อ service แต่ละตัวแยกออกจากกัน หาวัดประมาณการใช้งาน ก็จะสามารถควบคุม nodes หรือจำนวน container ได้ว่าควรเพิ่มขึ้นหรือลดลง ส่งผลให้การจูนประสิทธิภาพมากขึ้น เพราะ service บางตัวต้องการ nodes หรือ spec ram, cpu มากกว่าตัวอื่น ทำให้การ scaling สามารถทำได้โดยง่าย ทำให้ k8s จึงมาช่วยได้ในเรื่องนี้
+> - - ใช้เมื่อ ระบบของเรามีความซับซ้อน มีขนาดใหญ่ มี service ย่อย ๆ ทำงานร่วมกันจำนวนมาก รวมถึงต้องการจัดสรรให้ สามารถ scaling บาง service ได้
 
 ---
 
