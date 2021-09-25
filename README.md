@@ -5,16 +5,16 @@
 1. Describe Git branching strategies (Git-flow, single branch, feature branch etc.) which you have used and what purpose does it serves.
 
 > ANS: ใช้ git-flow เป็นการแบ่ง branch เพื่อใช้ประโยชน์ รวมถึงแยกโค้ดที่ทดสอบแล้ว หรือกำลังพัฒนาออกจากกัน
-> **master** เป็น branch ของโค้ดที่เสร็จแล้ว ทดสอบเรียบร้อยแล้ว หรือเรียกว่า production รวมถึงจะติด tag version เพื่อแยก version ใหม่เก่าออกจากกัน และให้ง่ายต่อการ deploy หรือ rollback
-> **develop** เป็น branch หลักของโปรเจค เพราะหากมี feature ใหม่ๆ จะต้อง merge มารวมกันที่นี่ก่อน รวมถึงเพื่อใช้ทดสอบก่อนจริงก่อนขึ้น production อีกทั้ง develop จะแตก branch มาจาก master เพื่อที่จะได้ pull request กลับเข้า master เมื่อพร้อมจะ deploy production
-> **feature** เป็น branch ย่อยที่แตกจาก develop เพื่อพัฒนา หรือแก้ไขฟังก์ชันต่างๆ ที่ต้องแยกเพื่อให้คนในทีม สามารถพัฒนาไปพร้อมๆ กันได้ และเมื่อเสร็จจะ merge กลับเข้า develop
-> **hotfix** เป็น branch ย่อยที่แตกมาจาก master เพื่อแก้ไข bug ที่อาจเกิดขึ้นได้ หากเร่งด่วนจะ merge กลับเข้า master แต่ถ้าไม่ด่วนมาก จะ merge เข้า develop เพื่อรอทดสอบต่อไป
+> - **master** เป็น branch ของโค้ดที่เสร็จแล้ว ทดสอบเรียบร้อยแล้ว หรือเรียกว่า production รวมถึงจะติด tag version เพื่อแยก version ใหม่เก่าออกจากกัน และให้ง่ายต่อการ deploy หรือ rollback
+> - **develop** เป็น branch หลักของโปรเจค เพราะหากมี feature ใหม่ๆ จะต้อง merge มารวมกันที่นี่ก่อน รวมถึงเพื่อใช้ทดสอบก่อนจริงก่อนขึ้น production อีกทั้ง develop จะแตก branch มาจาก master เพื่อที่จะได้ pull request กลับเข้า master เมื่อพร้อมจะ deploy production
+> - **feature** เป็น branch ย่อยที่แตกจาก develop เพื่อพัฒนา หรือแก้ไขฟังก์ชันต่างๆ ที่ต้องแยกเพื่อให้คนในทีม สามารถพัฒนาไปพร้อมๆ กันได้ และเมื่อเสร็จจะ merge กลับเข้า develop
+> - **hotfix** เป็น branch ย่อยที่แตกมาจาก master เพื่อแก้ไข bug ที่อาจเกิดขึ้นได้ หากเร่งด่วนจะ merge กลับเข้า master แต่ถ้าไม่ด่วนมาก จะ merge เข้า develop เพื่อรอทดสอบต่อไป
 
 2. How do you revert a commit that has already been pushed and made public?
 
 > ANS: สามารถใช้คำสั่ง `git reset` หรือ `git revert` โดยทั้งสองตัวมีข้อแตกต่างกันคือ
-> **git reset** จะทำการ reset history หรือลบ commit นั้น ๆ หากเลือก mode hard ซึ่งต้องมั่นใจว่าที่ reset นั้นถูกต้อง เพราะหาก git force push แล้วคนอื่น pull ลงมาจะย้อนกลับไม่่ได้
-> **git revert** จะทำการยกเลิกการแก้ไขของ commit นั้น โดยจะ commit ใหม่ต่ออีกที แนะนำวิธีนี้เพราะปลอดภัย เพราะจะยังคงมี history เหลืออยู่
+> - **git reset** จะทำการ reset history หรือลบ commit นั้น ๆ หากเลือก mode hard ซึ่งต้องมั่นใจว่าที่ reset นั้นถูกต้อง เพราะหาก git force push แล้วคนอื่น pull ลงมาจะย้อนกลับไม่่ได้
+> - **git revert** จะทำการยกเลิกการแก้ไขของ commit นั้น โดยจะ commit ใหม่ต่ออีกที แนะนำวิธีนี้เพราะปลอดภัย เพราะจะยังคงมี history เหลืออยู่
 
 3. How do you normally solve conflicts in a feature branch before merge?
 
@@ -41,44 +41,44 @@
 8. “401 Unauthorized” what does it mean and how to identify the problem?
 
 > ANS: เป็น status บอก client ว่าไม่ได้ยืนยันตัวตน ทำให้เข้าถึงไม่ได้ ดังนั้นมักจะ redirect ให้ login ก่อน
-> การระบุปัญหา จะต้องตรวจดูว่า server มีการ auth อย่างไร มีการใช้ token หรือ cookie หรือไม่ ถ้าใช้ ดูว่ามีครบ หรือส่งไปกับ header หรือไม่
+> - การระบุปัญหา จะต้องตรวจดูว่า server มีการ auth อย่างไร มีการใช้ token หรือ cookie หรือไม่ ถ้าใช้ ดูว่ามีครบ หรือส่งไปกับ header หรือไม่
 
 9. “403 Forbidden” what does it mean and how to identify the problem?
 
 > ANS: เป็น status บอก client ว่าไม่มีสิทธิ์ในการเข้าถึง เช่น user ไม่มีสิทธิ์ในหน้า admin หรือระดับสิทธิ์ไม่ถึงตามที่ server กำหนด 
-> การระบุปัญหา จะต้องตรวจสอบว่า user ที่ใช้งานมีสิทธิ์ หรือระดับ user กับ api นั้น ๆ หรือไม่
+> - การระบุปัญหา จะต้องตรวจสอบว่า user ที่ใช้งานมีสิทธิ์ หรือระดับ user กับ api นั้น ๆ หรือไม่
 
 10.   “404 Not Found” what does it mean and how to identify the problem?
 
 > ANS: เป็น status บอก client ว่าหน้าที่กำลังเข้าถึงนั้นไม่มีอยู่ หรือไม่พบ รวมถึง server แจ้งว่าไม่พบ เช่น user id หรือ product id ที่เรียกอยู่
-> การระบุปัญหา จะต้องลองค้นหาไฟล์ที่อยู่บน server ว่ามีอยู่จริงหรือไม่ หรือชื่อเปลี่ยนไป path ถึงต้องไหม
+> - การระบุปัญหา จะต้องลองค้นหาไฟล์ที่อยู่บน server ว่ามีอยู่จริงหรือไม่ หรือชื่อเปลี่ยนไป path ถึงต้องไหม
 
 11.  “500 Internal Server Error” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้ง client ว่ามีปัญหาบางอย่างที่ server ทำให้ไม่สามารถให้บริการได้ อาจจะเกิดจากการล่มของฐานข้อมูล ทำให้ server ไม่สามารถตอบสนอง client ได้
-> การระบุปัญหา จะต้องดูจาก log ที่มีการเก็บไว้ ว่าเกิดที่ service ใดๆ ช่วงเวลาไหน เพื่อที่จะได้แก้ไขได้ถูกต้อง
+> - การระบุปัญหา จะต้องดูจาก log ที่มีการเก็บไว้ ว่าเกิดที่ service ใดๆ ช่วงเวลาไหน เพื่อที่จะได้แก้ไขได้ถูกต้อง
 
 12. “502 Bad Gateway” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้ง client ว่ามีปัญหาจากการติดต่อ server เช่น proxy ก่อนเข้าถึง backend มีปัญหา
-> การระบุปัญหา ดู log ประกอบ รวมถึง check status ของ proxy หรือบริการที่อาจจะมีปัญหา ว่ายังทำงานได้ครบถ้วน หรือไม่
+> - การระบุปัญหา ดู log ประกอบ รวมถึง check status ของ proxy หรือบริการที่อาจจะมีปัญหา ว่ายังทำงานได้ครบถ้วน หรือไม่
 
 13. “503 Service Unavailable” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้ง client ว่ามี service มีปัญหา เช่น อาจจะรับ request ไม่ไหว ดังนั้น หากมี 503 เกิดขึ้นแสดงว่า อาจจะต้องดูว่า service หรือเครื่อง server เรามี spec ที่เพียงพอแล้วหรือยัง หรือน้อยเกินไป ในการให้บริการ
-> การระบุปัญหา ดู log ประกอบ รวมถึงดูว่าช่วงเวลาที่มีปัญหา สัมพันธ์กันอย่างไรกับปริมาณ request อาจจะลองเพิ่ม spec หรือ container แล้วลองยิ่ง request เพื่อทดสอบการรองรับ ว่าเพียงพอ หรือเผื่อไว้มากพอ
+> - การระบุปัญหา ดู log ประกอบ รวมถึงดูว่าช่วงเวลาที่มีปัญหา สัมพันธ์กันอย่างไรกับปริมาณ request อาจจะลองเพิ่ม spec หรือ container แล้วลองยิ่ง request เพื่อทดสอบการรองรับ ว่าเพียงพอ หรือเผื่อไว้มากพอ
 
 14. “504 Gateway Timeout” what does it mean and how to identify the problem?
 
 > ANS: เป็น status ที่แจ้งว่า service มีปัญหา เพราะเนื่องจาก ระยะเวลาที่ใช้ทำการนานไป และอาจส่งผลต่อ user คนอื่น จึงต้องตัด connection ที่รอนาน เพื่อลดปัญหาทั้งระบบ
-> การระบุปัญหา จะต้องทดสอบการยิง request จาก vpn หลายๆ ที่ เพื่อทดสอบว่า กลุ่มลูกค้าที่ใช้ มีปัญหามากน้อย แค่ไหน อาจต้องเพิ่ม sever, cdn ที่ประเทศนั้นๆ
+> - การระบุปัญหา จะต้องทดสอบการยิง request จาก vpn หลายๆ ที่ เพื่อทดสอบว่า กลุ่มลูกค้าที่ใช้ มีปัญหามากน้อย แค่ไหน อาจต้องเพิ่ม sever, cdn ที่ประเทศนั้นๆ
 
 15. What are Linux network tools do you use for troubleshooting network problems as well as usage scenarios for each tool?
 
 > ANS: 
-> **ping** เป็น tool ในการทดสอบการติดต่อระหว่าง server ว่าสามารถติดต่อได้หรือไม่ มักจะเป็น tools ตัวแรกในการตรวจสอบปัญหา รวมถึงดูระยะเวลาการตอบสนอง ว่านานเกินไปหรือไม่ 
-> ตัวที่สอง หาทดสอบเชื่อมต่อด้วย ping แล้ว ยังปกติ ต้องหาว่า service นั้นๆ ทำงานอยู่หรือไม่ โดยใช้ **netstat** ใช้ในการแสดง port ต่างๆ ที่ถูกใช้ในเครื่อง สุดท้ายตรวจสอบว่า domain ที่ผูกไปยิงไป ip ถูกต้องไหม
-> **nslookup** ใช้ในการหา ip ที่ผูกกับ domain name เพื่อให้รู้ว่า domain name นั้นผูกกับ ip ถูกต้องหรือไม่
+> - **ping** เป็น tool ในการทดสอบการติดต่อระหว่าง server ว่าสามารถติดต่อได้หรือไม่ มักจะเป็น tools ตัวแรกในการตรวจสอบปัญหา รวมถึงดูระยะเวลาการตอบสนอง ว่านานเกินไปหรือไม่ 
+> - ตัวที่สอง หาทดสอบเชื่อมต่อด้วย ping แล้ว ยังปกติ ต้องหาว่า service นั้นๆ ทำงานอยู่หรือไม่ โดยใช้ **netstat** ใช้ในการแสดง port ต่างๆ ที่ถูกใช้ในเครื่อง สุดท้ายตรวจสอบว่า domain ที่ผูกไปยิงไป ip ถูกต้องไหม
+> - **nslookup** ใช้ในการหา ip ที่ผูกกับ domain name เพื่อให้รู้ว่า domain name นั้นผูกกับ ip ถูกต้องหรือไม่
 ---
 
 ## Intermediate
