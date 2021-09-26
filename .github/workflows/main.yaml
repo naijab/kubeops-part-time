@@ -58,9 +58,25 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           target: production
 
+      - name: Set up kubectl
+        uses: matootie/dokube@v1.3.4
+        with:
+          personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          clusterName: do-sgp1-kubeops-hands-on-sg
+
+      - name: Create namespace
+        run: |
+          namespacePresent=`kubectl get namespace | grep production | wc -l`
+          if [$namespacePresent -eq 0]
+          then
+            echo `kubectl create namespace production`
+          fi
+
       - name: Send notification to Slack
         id: slack
         uses: slackapi/slack-github-action@v1.14.0
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          payload: '"{"text": "Build node service completed"}"'
         if: always()
