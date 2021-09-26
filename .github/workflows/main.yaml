@@ -11,12 +11,9 @@ jobs:
       contents: read
       packages: write
 
-    defaults:
-      run:
-        working-directory: ./hands-on/node-service
-
     env:
       IMAGE_NAME: ${{ github.repository }}/hands-on/node-service
+      NODE_SERVICE_FOLDER: ./hands-on/node-service
 
     steps:
       - uses: act10ns/slack@v1
@@ -37,7 +34,8 @@ jobs:
       - name: Run unit test before build production
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./${{NODE_SERVICE_FOLDER}}
+          file: ./${{NODE_SERVICE_FOLDER}}/Dockerfile
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           target: test
@@ -52,9 +50,10 @@ jobs:
 
       - name: Build and push production image
         uses: docker/build-push-action@v2
-        if: startsWith(github.event.ref, 'refs/tags/v')
+        if: startsWith(github.event.ref, 'refs/tags/v')\
         with:
-          context: .
+          context: ./${{NODE_SERVICE_FOLDER}}
+          file: ./${{NODE_SERVICE_FOLDER}}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           target: production
