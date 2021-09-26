@@ -52,12 +52,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           target: production
 
-      - name: Set up kubectl
-        uses: matootie/dokube@v1.3.4
+      - name: Install doctl for connect to DigitalOcean
+        uses: digitalocean/action-doctl@v2
         if: startsWith(github.event.ref, 'refs/tags/v')
         with:
-          personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
-          clusterName: do-sgp1-kubeops-hands-on-sg
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        run: doctl kubernetes cluster kubeconfig save 61567389-2e80-44ea-9584-5f14493e3491
 
       - name: Create namespace to K8S
         if: startsWith(github.event.ref, 'refs/tags/v')
