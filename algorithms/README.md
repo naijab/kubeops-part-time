@@ -5,4 +5,7 @@
 > `curl https://sh.rustup.rs -sSf | sh`
 
 ## How to run
-> `cargo run test`
+> `cargo test`
+
+## Command
+> `cargo fmt` for format rust code

@@ -5,5 +5,5 @@ mod palindrome;
 mod spend_money;
 
 fn main() {
-  println!("Algorithms -- Hello World!")
+    println!("Algorithms -- Hello World!")
 }
