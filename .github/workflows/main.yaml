@@ -14,7 +14,7 @@ jobs:
       run:
         working-directory: ./hands-on/node-service
     env:
-      IMAGE_NAME: ${{REPOSITORY_NAME}}/hands-on/node-service:latest
+      IMAGE_NAME: "${{ REPOSITORY_NAME }}/hands-on/node-service:latest"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
