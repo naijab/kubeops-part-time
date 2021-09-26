@@ -2,7 +2,6 @@ on: [push]
 
 env:
   REGISTRY: ghcr.io
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   node-service-jobs:
@@ -23,7 +22,7 @@ jobs:
       - uses: act10ns/slack@v1
         with:
           status: starting
-          channel: '#workflows'
+          channel: "#workflows"
         if: always()
 
       - name: Checkout repository
@@ -61,9 +60,9 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           target: production
 
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+      - name: Send notification to Slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.14.0
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_COLOR: ${{ job.status }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
