@@ -14,3 +14,9 @@
 - `make test` - for running unit test
 - `make test-docker` - for running unit test on dockerfile
 - `make build-docker` - for building docker image
+
+## CI Flow
+
+- if push is only run unit test not deploy
+- tag with `b.x.x.x` and push tag will deploy as Beta
+- tag with `v.x.x.x` and push tag will deploy as Production

@@ -238,7 +238,7 @@ The solution must include the following
 
 Please update README for steps how to test, build, deploy and run the application using Kubernetes
 
-> ANS:
+> ANS: [hands-on](https://github.com/naijab/kubeops-part-time/tree/master/hands-on)
 
 ---
 
