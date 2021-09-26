@@ -13,7 +13,7 @@ jobs:
 
     env:
       IMAGE_NAME: ${{ github.repository }}/hands-on/node-service
-      NODE_SERVICE_FOLDER: ./hands-on/node-service
+      WORKING_FOLDER: ./hands-on/node-service
 
     steps:
       - uses: act10ns/slack@v1
@@ -34,8 +34,8 @@ jobs:
       - name: Run unit test before build production
         uses: docker/build-push-action@v2
         with:
-          context: ./${{NODE_SERVICE_FOLDER}}
-          file: ./${{NODE_SERVICE_FOLDER}}/Dockerfile
+          context: ./${{ env.WORKING_FOLDER }}
+          file: ./${{ env.WORKING_FOLDER }}/Dockerfile
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           target: test
@@ -52,8 +52,8 @@ jobs:
         uses: docker/build-push-action@v2
         if: startsWith(github.event.ref, 'refs/tags/v')\
         with:
-          context: ./${{NODE_SERVICE_FOLDER}}
-          file: ./${{NODE_SERVICE_FOLDER}}/Dockerfile
+          context: ./${{ env.WORKING_FOLDER }}
+          file: ./${{ env.WORKING_FOLDER }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           target: production
