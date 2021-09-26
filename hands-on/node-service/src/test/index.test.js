@@ -6,5 +6,5 @@ afterEach((done) => {
 });
 
 test("GET / should return 200 status", async () => {
-  await request(server).get("/").expect(201);
+  await request(server).get("/").expect(200);
 });
