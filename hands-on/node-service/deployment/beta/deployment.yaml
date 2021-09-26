@@ -18,6 +18,7 @@ spec:
       containers:
         - name: node-service
           image: ghcr.io/naijab/kubeops-part-time/hands-on/node-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

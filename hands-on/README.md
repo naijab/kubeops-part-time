@@ -1,5 +1,16 @@
 # Hands-on
 
+## URL
+
+### Beta
+
+- [Node Service - http://beta.hands-on.naijab.com/node](http://beta.hands-on.naijab.com/node)
+
+### Production
+
+- [Node Service - http://prod.hands-on.naijab.com/node](http://prod.hands-on.naijab.com/node)
+
+---
 ## Requirement
 
 - **make** with `brew install make`
