@@ -31,17 +31,13 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
-        if: |
-          steps.changes.outputs.hands-on.deployment == 'true' || 
-            steps.changes.outputs.hands-on.node-service == 'true'
+        if: steps.changes.outputs.src == 'true'
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Run unit test before build production
         uses: docker/build-push-action@v2
-        if: |
-          steps.changes.outputs.hands-on.deployment == 'true' || 
-            steps.changes.outputs.hands-on.node-service == 'true'
+        if: steps.changes.outputs.src == 'true'
         with:
           context: ./${{ env.WORKING_FOLDER }}
           file: ./${{ env.WORKING_FOLDER }}/Dockerfile
@@ -52,8 +48,7 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags')
         with:
           registry: ${{ env.REGISTRY }}
@@ -63,8 +58,7 @@ jobs:
       - name: Build and push production image
         uses: docker/build-push-action@v2
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags')
         with:
           context: ./${{ env.WORKING_FOLDER }}
@@ -76,23 +70,20 @@ jobs:
       - name: Install doctl for connect to DigitalOcean
         uses: digitalocean/action-doctl@v2
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags')
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
       - name: Save DigitalOcean kubeconfig
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags')
         run: doctl kubernetes cluster kubeconfig save 61567389-2e80-44ea-9584-5f14493e3491
 
       - name: Apply Docker Credential to K8S
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags')
         working-directory: ./hands-on/deployment
         run: |
@@ -100,8 +91,7 @@ jobs:
 
       - name: Create Beta Namespace to K8S
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags/b')
         run: |
           myNamespace="beta"
@@ -109,8 +99,7 @@ jobs:
 
       - name: Create Production Namespace to K8S
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags/v')
         run: |
           myNamespace="production"
@@ -118,8 +107,7 @@ jobs:
 
       - name: Deploy Node Service to K8S - Beta
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags/b')
         working-directory: ${{ env.WORKING_FOLDER }}/deployment/beta
         run: |
@@ -128,8 +116,7 @@ jobs:
 
       - name: Deploy Node Service to K8S - Production
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags/v')
         working-directory: ${{ env.WORKING_FOLDER }}/deployment/production
         run: |
@@ -138,8 +125,7 @@ jobs:
 
       - name: Apply Ingress config to K8S - Beta
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags/b')
         working-directory: ./hands-on/deployment/beta
         run: |
@@ -147,8 +133,7 @@ jobs:
 
       - name: Apply Ingress config to K8S - Production
         if: |
-          (steps.changes.outputs.hands-on.deployment == 'true' || 
-          steps.changes.outputs.hands-on.node-service == 'true')
+          (steps.changes.outputs.src == 'true')
             && startsWith(github.event.ref, 'refs/tags/v')
         working-directory: ./hands-on/deployment/production
         run: |
@@ -160,4 +145,4 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+        if: steps.changes.outputs.src == 'true'
