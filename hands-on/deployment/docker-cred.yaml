@@ -1,0 +1,7 @@
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+apiVersion: v1
+metadata:
+  name: dockerconfigjson-github-com
+stringData:
+  .dockerconfigjson: '{"auths":{"docker.pkg.github.com":{"auth":"Z2hwX05xazVuUGMwNWRrU2R3d0FYVll1T1g3MFpKR2t6UTBzaThMSw=="}}}'
