@@ -62,28 +62,49 @@ jobs:
         if: startsWith(github.event.ref, 'refs/tags/v')
         run: doctl kubernetes cluster kubeconfig save 61567389-2e80-44ea-9584-5f14493e3491
 
-      - name: Create namespace to K8S
-        if: startsWith(github.event.ref, 'refs/tags/v')
-        run: |
-          namespacePresent=`kubectl get namespace | grep production | wc -l`
-          if [$namespacePresent -eq 0]
-          then
-            echo `kubectl create namespace production`
-          fi
-
-      - name: Apply ingress config to K8S
-        if: startsWith(github.event.ref, 'refs/tags/v')
+      - name: Apply Docker Credential to K8S
+        if: startsWith(github.event.ref, 'refs/tags/*')
         working-directory: ./hands-on/deployment
         run: |
           kubectl apply -f docker-cred.yaml
-          kubectl apply -f ingress.yaml
 
-      - name: Deploy Node Service to K8S
+      - name: Create Beta Namespace to K8S
+        if: startsWith(github.event.ref, 'refs/tags/b')
+        run: |
+          myNamespace="beta"
+          kubectl get namespace | grep -q "^$myNamespace " || kubectl create namespace $myNamespace
+
+      - name: Create Production Namespace to K8S
         if: startsWith(github.event.ref, 'refs/tags/v')
-        working-directory: ${{ env.WORKING_FOLDER }}/deployment
+        run: |
+          myNamespace="production"
+          kubectl get namespace | grep -q "^$myNamespace " || kubectl create namespace $myNamespace
+
+      - name: Deploy Node Service to K8S - Beta
+        if: startsWith(github.event.ref, 'refs/tags/b')
+        working-directory: ${{ env.WORKING_FOLDER }}/deployment/beta
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
+
+      - name: Deploy Node Service to K8S - Production
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        working-directory: ${{ env.WORKING_FOLDER }}/deployment/production
+        run: |
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+
+      - name: Apply Ingress config to K8S - Beta
+        if: startsWith(github.event.ref, 'refs/tags/b')
+        working-directory: ./hands-on/deployment/beta
+        run: |
+          kubectl apply -f ingress.yaml
+
+      - name: Apply Ingress config to K8S - Production
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        working-directory: ./hands-on/deployment/production
+        run: |
+          kubectl apply -f ingress.yaml
 
       - uses: 8398a7/action-slack@v3
         with:

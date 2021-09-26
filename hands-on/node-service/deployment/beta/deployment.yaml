@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: beta
+  name: node-service
+  labels:
+    app: node-service
+spec:
+  selector:
+    matchLabels:
+      app: node-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: node-service
+    spec:
+      containers:
+        - name: node-service
+          image: ghcr.io/naijab/kubeops-part-time/hands-on/node-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: ENV
+              value: beta
+            - name: PORT
+              value: "3000"
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com
