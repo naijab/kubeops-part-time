@@ -5,6 +5,6 @@ afterEach((done) => {
   server.close(done);
 });
 
-test("GET / should return 200 status", async () => {
-  await request(server).get("/").expect(200);
+test("GET /node should return 200 status", async () => {
+  await request(server).get("/node").expect(200);
 });
