@@ -3,19 +3,30 @@ on: [push]
 env:
   REGISTRY: ghcr.io
   REPOSITORY_NAME: ${{ github.repository }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   node-service-jobs:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
+
     defaults:
       run:
         working-directory: ./hands-on/node-service
+
     env:
-      IMAGE_NAME: "${{ env.REPOSITORY_NAME }}/hands-on/node-service:latest"
+      IMAGE_NAME: ${{ env.REPOSITORY_NAME }}/hands-on/node-service:latest
+
     steps:
+      - uses: act10ns/slack@v1
+        with:
+          status: starting
+          channel: "#workflows"
+        if: always()
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -49,3 +60,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: production
+
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#workflows"
+        if: always()
