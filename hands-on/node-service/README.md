@@ -2,6 +2,6 @@
 
 ## Requirement
 
-- node.js version 14
+- node.js version 14 LTS
 - yarn
 - docker

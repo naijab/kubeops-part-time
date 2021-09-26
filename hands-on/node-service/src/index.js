@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 
 app.get("/node", (req, res) => {
   return res.json({
-    message: `Node Service on env : ${env}`,
+    message: `Node Service on env : ${env} -- version 0.0.5`,
   });
 });
 
