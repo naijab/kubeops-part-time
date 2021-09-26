@@ -16,7 +16,7 @@ jobs:
         working-directory: ./hands-on/node-service
 
     env:
-      IMAGE_NAME: ${{ github.repository }}/hands-on/node-service:latest
+      IMAGE_NAME: ${{ github.repository }}/hands-on/node-service
 
     steps:
       - uses: act10ns/slack@v1
@@ -27,13 +27,6 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -48,6 +41,14 @@ jobs:
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           target: test
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
 
       - name: Build and push production image
         uses: docker/build-push-action@v2
