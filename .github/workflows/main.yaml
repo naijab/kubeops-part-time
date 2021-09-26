@@ -16,12 +16,6 @@ jobs:
       WORKING_FOLDER: ./hands-on/node-service
 
     steps:
-      - uses: act10ns/slack@v1
-        with:
-          status: starting
-          channel: "#workflows"
-        if: always()
-
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -60,11 +54,13 @@ jobs:
 
       - name: Set up kubectl
         uses: matootie/dokube@v1.3.4
+        if: startsWith(github.event.ref, 'refs/tags/v')
         with:
           personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
           clusterName: do-sgp1-kubeops-hands-on-sg
 
       - name: Create namespace
+        if: startsWith(github.event.ref, 'refs/tags/v')
         run: |
           namespacePresent=`kubectl get namespace | grep production | wc -l`
           if [$namespacePresent -eq 0]
@@ -72,11 +68,10 @@ jobs:
             echo `kubectl create namespace production`
           fi
 
-      - name: Send notification to Slack
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          payload: '"{"text": "Build node service completed"}"'
-        if: always()
+      -   uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          if: always()
