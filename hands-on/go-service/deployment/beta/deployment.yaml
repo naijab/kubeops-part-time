@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: go-service
-          image: ghcr.io/naijab/kubeops-part-time/hands-on/go-service:b.0.0.1-go
+          image: ghcr.io/naijab/kubeops-part-time/hands-on/go-service:b.0.0.3-go
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
