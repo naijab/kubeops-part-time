@@ -4,11 +4,13 @@
 
 ### Beta
 
-- [Node Service - http://beta.hands-on.naijab.com/node](http://beta.hands-on.naijab.com/node)
+- [Node Service - https://beta.hands-on.naijab.com/node](https://beta.hands-on.naijab.com/node)
+- [Go Service - https://beta.hands-on.naijab.com/go](https://beta.hands-on.naijab.com/go)
 
 ### Production
 
-- [Node Service - http://prod.hands-on.naijab.com/node](http://prod.hands-on.naijab.com/node)
+- [Node Service - https://prod.hands-on.naijab.com/node](https://prod.hands-on.naijab.com/node)
+- [Go Service - https://prod.hands-on.naijab.com/go](https://prod.hands-on.naijab.com/go)
 
 ---
 ## Requirement
