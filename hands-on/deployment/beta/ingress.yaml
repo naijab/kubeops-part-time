@@ -22,3 +22,10 @@ spec:
             name: node-service
             port:
               number: 80
+      - path: /go
+        pathType: Prefix
+        backend:
+          service:
+            name: go-service
+            port:
+              number: 80
