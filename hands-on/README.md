@@ -1,5 +1,8 @@
 # Hands-on
 
+## Architecture
+![Architecture](../assets/Hand-On-Arch.jpeg)
+
 ## URL
 
 ### Beta
@@ -33,3 +36,4 @@
 - if push is only run unit test not deploy
 - tag with `b.x.x.x` and push tag will deploy as Beta
 - tag with `v.x.x.x` and push tag will deploy as Production
+
