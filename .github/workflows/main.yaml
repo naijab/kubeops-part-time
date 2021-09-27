@@ -32,7 +32,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
-        if: | 
+        if: |
           steps.changes.outputs.deployment == 'true' ||
             steps.changes.outputs.service == 'true'
         with:
@@ -40,7 +40,168 @@ jobs:
 
       - name: Run unit test before build production
         uses: docker/build-push-action@v2
-        if: | 
+        if: |
+          steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true'
+        with:
+          context: ./${{ env.WORKING_FOLDER }}
+          file: ./${{ env.WORKING_FOLDER }}/Dockerfile
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          target: test
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags')
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Build and push production image
+        uses: docker/build-push-action@v2
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags')
+        with:
+          context: ./${{ env.WORKING_FOLDER }}
+          file: ./${{ env.WORKING_FOLDER }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          target: production
+
+      - name: Install doctl for connect to DigitalOcean
+        uses: digitalocean/action-doctl@v2
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags')
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags')
+        run: doctl kubernetes cluster kubeconfig save ${{ secrets.K8S_CLUSTER_ID }}
+
+      - name: Apply Docker Credential to K8S
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags')
+        working-directory: ./hands-on/deployment
+        run: |
+          kubectl apply -f docker-cred.yaml
+
+      - name: Create Beta Namespace to K8S
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags/b')
+        run: |
+          myNamespace="beta"
+          kubectl get namespace | grep -q "^$myNamespace " || kubectl create namespace $myNamespace
+
+      - name: Create Production Namespace to K8S
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags/v')
+        run: |
+          myNamespace="production"
+          kubectl get namespace | grep -q "^$myNamespace " || kubectl create namespace $myNamespace
+
+      - name: Deploy Node Service to K8S - Beta
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags/b')
+        working-directory: ${{ env.WORKING_FOLDER }}/deployment/beta
+        run: |
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+
+      - name: Deploy Node Service to K8S - Production
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags/v')
+        working-directory: ${{ env.WORKING_FOLDER }}/deployment/production
+        run: |
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+
+      - name: Apply Ingress config to K8S - Beta
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags/b')
+        working-directory: ./hands-on/deployment/beta
+        run: |
+          kubectl apply -f ingress.yaml
+
+      - name: Apply Ingress config to K8S - Production
+        if: |
+          (steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true')
+            && startsWith(github.event.ref, 'refs/tags/v')
+        working-directory: ./hands-on/deployment/production
+        run: |
+          kubectl apply -f ingress.yaml
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: |
+          steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true'
+
+  go-service-jobs:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      IMAGE_NAME: ${{ github.repository }}/hands-on/go-service
+      WORKING_FOLDER: ./hands-on/go-service
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check is Node Service has changed
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            deployment:
+              - 'hands-on/deployment/**'
+            service:
+              - 'hands-on/go-service/**'
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        if: |
+          steps.changes.outputs.deployment == 'true' ||
+            steps.changes.outputs.service == 'true'
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Run unit test before build production
+        uses: docker/build-push-action@v2
+        if: |
           steps.changes.outputs.deployment == 'true' ||
             steps.changes.outputs.service == 'true'
         with:
